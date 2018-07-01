@@ -43,7 +43,7 @@
 
 		/**
 		 * 
-		 * 檢查輸入的值是否為有長度字串 
+		 * 檢查輸入的變數是否為有長度字串 
 		 *
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
@@ -58,6 +58,15 @@
 			}
 			return true;//若變數的資料型態是string且不為空，則返回true
 		}
+		
+		/**
+		 * 
+		 * 檢查輸入的變數是否為有長度字串 
+		 *
+		 * @param mixed $checked_var 要檢查的變數
+		 * @return bool
+		 * @throws Exception
+		 */
 		static public function is_solid_string($checked_var) {
 			return self::is_non_empty_string($checked_var);
 		}
@@ -79,6 +88,15 @@
 			}
 			return true;//若變數的資料型態是array且元素數目>0，則返回true
 		}
+		
+		/**
+		 * 
+		 * 檢查輸入的值是否為有元素陣列 
+		 *
+		 * @param mixed $checked_var 要檢查的變數
+		 * @return bool
+		 * @throws Exception
+		 */
 		static public function is_solid_array($checked_var) {
 			return self::is_non_empty_array($checked_var);
 		}
@@ -97,6 +115,15 @@
 			}
 			return true;//若變數的資料型態是double或integer，則返回true
 		}
+		
+		/**
+		 * 
+		 * 檢查輸入的值是否為數字型態
+		 *
+		 * @param mixed $checked_var 要檢查的變數
+		 * @return bool
+		 * @throws Exception
+		 */
 		static public function is_solid_number($checked_var) {
 			return self::is_non_empty_number($checked_var);
 		}
@@ -139,8 +166,6 @@
 		 * @param string $subword 該特定字串
 		 * @param string $testword 被檢查的字串
 		 * @return bool
-		 * @throws Exception
-		 * @todo 
 		 */
 		static public function is_start_with($subword, $testword) {
 			if (preg_match('/^' . preg_quote($subword, '/') . '/Dsu', $testword) == 0) {
@@ -157,7 +182,6 @@
 		 * @param string $subword 該特定字串
 		 * @param string $testword 被檢查的字串
 		 * @return bool
-		 * @throws Exception
 		 */
 		static public function is_end_with($subword, $testword) {
 			if (preg_match('/' . preg_quote($subword, '/') . '$/Dsu', $testword) == 0) {
@@ -351,7 +375,6 @@
 		 *
 		 * @param string $the_url 
 		 * @return Array
-		 * @throws Exception
 		 *
 		 */
 		static public function get_url_params($the_url) {
@@ -447,14 +470,10 @@
 		 * 
 		 * 將特定字首字串及特定字尾字串的方式，去取得中間的字串
 		 *
-		 * @param array $source_string 要處理的來源字串
-		 * @param array $start_string 特定字首字串
-		 * @param array $end_string 特定字尾字串
-		 * @return string 中間得字串
-		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
+		 * @param string $source_string 要處理的來源字串
+		 * @param string $start_string 特定字首字串
+		 * @param string $end_string 特定字尾字串
+		 * @return string 中間的字串
 		 *
 		 * 舉例:
 		 * $the_string='data_row_a80235_id';
@@ -492,8 +511,8 @@
 		 * 
 		 * 若字串一開始有出現特定字串則移除掉
 		 *
-		 * @param array $source_string 要處理的來源字串
-		 * @param array $start_string 該特定字串
+		 * @param string $source_string 要處理的來源字串
+		 * @param string $start_string 該特定字串
 		 * @return string 返回一個處理過後的新字串
 		 * @throws Exception
 		 *
@@ -523,8 +542,8 @@
 		 * 
 		 * 若字串結尾有出現特定字串則移除掉
 		 *
-		 * @param array $source_string 要處理的來源字串
-		 * @param array $end_string 該特定字串
+		 * @param string $source_string 要處理的來源字串
+		 * @param string $end_string 該特定字串
 		 * @return string 返回一個處理過後的新字串
 		 * @throws Exception
 		 *
@@ -555,7 +574,6 @@
 		 * 偵測網頁瀏覽者之環境
 		 *
 		 * @return array
-		 * @throws Exception
 		 */
 		static public function parse_http_user_agent() {
 			//偵測完後 會返回的陣列
@@ -766,7 +784,6 @@
 		
 		/**
 		 * 下載檔案
-		 * 下載檔案時,直接下載不開啟檔案
 		 * uploadfile_download(上傳檔案id,顯示用下載檔名)
 		 * 上傳檔案id 相對於專案根磁碟路徑的路徑
 		 */
@@ -1031,11 +1048,11 @@
 			}else{
 				$file_settings['uploaddir']='uploadfile';
 			}
-			if(is_dir(ProjectRootDisk.'ej03xu3/update/'.$file_settings['uploaddir'])){
+			if(is_dir(ProjectRootDisk.'Uploads/'.$file_settings['uploaddir'])){
 			
 			}else{
 				
-				return ProjectRootDisk.'ej03xu3/update/'.$file_settings['uploaddir'].' is not exist';
+				return ProjectRootDisk.'Uploads/'.$file_settings['uploaddir'].' is not exist';
 			}
 			
 			//檢查上傳的檔案
@@ -1120,7 +1137,7 @@
 		/**
 		 * 變更檔名
 		 */
-		static public function uploadfile_rename($uploadfile_id,$to_name,$is_have_log=false,$is_overwrite=true,$connkey='conn1'){
+		static public function uploadfile_rename($uploadfile_id,$to_name,$is_overwrite=true){
 			$file_attrs=array();
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
 			
@@ -1161,27 +1178,14 @@
 			}
 			$file_attrs['id']=$new_uploadfile_id;
 			
-			//處理檔案
-			if($is_have_log){
-				$update_columns=array(
-					'uploadfile_id'=>$new_uploadfile_id
-				);
-				
-				try{
-					myDataHelper::v1_updatedr('uploadfile',$update_columns,"WHERE uploadfile_id='{$uploadfile_id}'",$connkey);
-				}catch(Exception $ee){
-					throw $ee;
-					//die(myDataHelper::$lastsql);
-				}
-			}
-		
+			
 			return $file_attrs;
 		}
 		
 		/**
 		 * 移動檔案
 		 */
-		static public function uploadfile_move($source_uploadfile_id,$destination_uploadfile_id,$is_have_log=true,$is_overwrite=false,$connkey='conn1'){
+		static public function uploadfile_move($source_uploadfile_id,$destination_uploadfile_id,$is_overwrite=false){
 			$file_attrs=array();
 			if(myGlobal::is_non_empty_string($source_uploadfile_id)){
 			
@@ -1215,28 +1219,13 @@
 				return false;
 			}
 		
-			
-			//處理檔案
-			if($is_have_log){
-				$updated_row=array(
-					'uploadfile_id'=>$destination_uploadfile_id
-				);
-				
-				try{
-					myDataHelper::v1_updatedr('uploadfile',$updated_row,"WHERE uploadfile_id='{$source_uploadfile_id}'",$connkey);
-				}catch(Exception $ee){
-					throw $ee;
-					//die(myDataHelper::$lastsql);
-				}
-			}
-		
 			return true;
 		}
 		
 		/**
 		 * 刪除檔案
 		 */
-		static public function uploadfile_remove($uploadfile_id,$connkey='conn1'){
+		static public function uploadfile_remove($uploadfile_id){
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
 			
 			}else{
@@ -1256,28 +1245,9 @@
 		}
 		
 		/**
-		 * 查看檔案
-		 */
-		static public function uploadfile_view($uploadfile_id,$connkey='conn1'){
-			$return_data=array();
-			if(myGlobal::is_non_empty_string($uploadfile_id)){
-			
-			}else{
-				return $return_data;
-			}
-			$uploadfile_id=myDataHelper::v1_escape_for_sql($uploadfile_id);
-			$strsql		= 
-			"SELECT * FROM uploadfile ".
-			"WHERE uploadfile_id='{$uploadfile_id}';";
-			$return_data=myDataHelper::v1_getrow($strsql,$connkey);
-
-			return $return_data;
-		}
-		
-		/**
 		 * 檢測檔案是否存在
 		 */
-		static public function uploadfile_isexist($uploadfile_id,$is_have_log=false,$connkey='conn1'){
+		static public function uploadfile_isexist($uploadfile_id){
 			$is_exist=false;
 			if($uploadfile_id){
 			}else{
@@ -1289,18 +1259,7 @@
 				return $is_exist;
 			}
 			
-			if($is_have_log){
-				$uploadfile_id=myDataHelper::v1_escape_for_sql($uploadfile_id);
-				$strsql		= 
-				"SELECT COUNT(uploadfile_id) FROM uploadfile ".
-				"WHERE uploadfile_id='{$uploadfile_id}';";
-				$colval=myDataHelper::v1_getcolval($strsql,$connkey);
-				
-				if((int)$colval>0){
-				}else{
-					return $is_exist;
-				}
-			}
+			
 			
 			$is_exist=true;
 			return $is_exist;
@@ -1422,7 +1381,7 @@
 		}
 		
 		/**
-		 * 取得指定url的內容
+		 * 取得指定url的圖片資料
 		 */
 		static public function get_remote_file($fileurl){
 			$return_content='';
