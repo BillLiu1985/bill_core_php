@@ -1,7 +1,8 @@
 <?php
-	//網站根目錄實體路徑,是BillCore.php所在位置，作撰寫(視本檔所在位置做變動)
+	//須先抓取專案根目錄的實體路徑
+	//視bill_core.php所在位置，作撰寫(視本檔所在位置做變動)
 	define('ProjectRootDisk', dirname(dirname(__FILE__))."/");
-	//網站根目錄URL路徑(視環境做變動)
+	//需先設定專案根目錄的URL路徑
 	//define('ProjectRootUrl',"http://demo.artie.com.tw/tangao.com.tw/beta/");
 	
 	define("BSLASH","\\");
