@@ -1,13 +1,28 @@
 <?php
-	//須先抓取專案根目錄的實體路徑
-	//視bill_core.php所在位置，作撰寫(視本檔所在位置做變動)
+	/**
+	 * 建置網站常會用到的php函式庫
+	 */
+
+	 
+	/**
+	 * 須先抓取專案根目錄的磁碟路徑
+	 * 視bill_core.php所在位置，作撰寫(視本檔所在位置做變動)
+	 */
 	define('ProjectRootDisk', dirname(dirname(__FILE__))."/");
-	//需先設定專案根目錄的URL路徑
-	//define('ProjectRootUrl',"http://demo.artie.com.tw/tangao.com.tw/beta/");
 	
-	define("BSLASH","\\");
-	define("SQUOTES","'");
-	define("DQUOTES","\""); 
+	/**
+	 * 需先設定專案根目錄的URL路徑
+	 */
+	define('ProjectRootUrl',"http://demo.artie.com.tw/tangao.com.tw/beta/");
+	
+	/**
+	 * 為特定易混淆的字元設定常數，以利程式的維護性
+	 */
+	define("BSLASH","\\");//反斜線
+	define("SQUOTES","'");//單引號
+	define("DQUOTES","\"");//雙引號
+	
+	
 	/**
 	 *
 	 * 
@@ -15,22 +30,8 @@
 	 * 
 	 * 引入PHP元件前,必先引入全域PHP元件
 	 *
-	 * @category
-	 *   
-	 * @package myGlobal
-	 * @license   
-	 * @example  
-	 * @example <br />
-	 *  <br />
-	 *  <br />
-	 *  <br />
-	 *  <br />
-	 * @version  0.01
-	 * @since 2014-12-07
-	 * @author Bill Liu <o7z3149o0@hotmail.com>
 	 */
 	class myGlobal {
-
 		/**
 		 * 
 		 * 建構子
@@ -47,9 +48,6 @@
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_non_empty_string($checked_var) {
 			if (gettype($checked_var) !== 'string') {
@@ -58,11 +56,12 @@
 			if ($checked_var === '') {
 				return false;
 			}
-			return true;
+			return true;//若變數的資料型態是string且不為空，則返回true
 		}
 		static public function is_solid_string($checked_var) {
 			return self::is_non_empty_string($checked_var);
 		}
+		
 		/**
 		 * 
 		 * 檢查輸入的值是否為有元素陣列 
@@ -70,9 +69,6 @@
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_non_empty_array($checked_var) {
 			if (gettype($checked_var) !== 'array') {
@@ -81,11 +77,12 @@
 			if (count($checked_var) === 0) {
 				return false;
 			}
-			return true;
+			return true;//若變數的資料型態是array且元素數目>0，則返回true
 		}
 		static public function is_solid_array($checked_var) {
 			return self::is_non_empty_array($checked_var);
 		}
+		
 		/**
 		 * 
 		 * 檢查輸入的值是否為數字型態
@@ -93,30 +90,25 @@
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_non_empty_number($checked_var) {
 			if (gettype($checked_var) !== 'double' && gettype($checked_var) !== 'integer') {
 				return false;
 			}
-			return true;
+			return true;//若變數的資料型態是double或integer，則返回true
 		}
 		static public function is_solid_number($checked_var) {
 			return self::is_non_empty_number($checked_var);
 		}
+		
 		/**
 		 * 
-		 * 產生隨意字串
+		 * 產生特定長度的隨機字串
 		 *
 		 * @param int $wordlength 輸出長度
 		 * @param bool $is_number 是否允許數字出現
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function random_word($wordlength, $is_number = false) {
 
@@ -142,15 +134,13 @@
 
 		/**
 		 * 
-		 * 檢查輸入的字串是否以xxx字串開頭
+		 * 檢查輸入的字串是否以特定字串開頭
 		 *
-		 * @param string $subword xxx字串
+		 * @param string $subword 該特定字串
 		 * @param string $testword 被檢查的字串
 		 * @return bool
 		 * @throws Exception
 		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_start_with($subword, $testword) {
 			if (preg_match('/^' . preg_quote($subword, '/') . '/Dsu', $testword) == 0) {
@@ -162,15 +152,12 @@
 
 		/**
 		 * 
-		 * 檢查輸入的字串是否以xxx字串結尾
+		 * 檢查輸入的字串是否以特定字串結尾
 		 *
-		 * @param string $subword xxx字串
+		 * @param string $subword 該特定字串
 		 * @param string $testword 被檢查的字串
 		 * @return bool
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_end_with($subword, $testword) {
 			if (preg_match('/' . preg_quote($subword, '/') . '$/Dsu', $testword) == 0) {
@@ -179,17 +166,15 @@
 				return true;
 			}
 		}
+		
 		/**
 		 * 
-		 * 檢查是否包含子字串
+		 * 檢查是否包含特定的字串
 		 *
-		 * @param string $subword xxx字串
+		 * @param string $subword 該特定字串
 		 * @param string $testword 被檢查的字串
 		 * @return bool
 		 * @throws Exception
-		 * @todo 
-		 * @since 2016-05-10
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function is_contain_substring($subword, $testword) {
 			if (preg_match('/' . preg_quote($subword, '/') . '/Dsu', $testword) == 0) {
@@ -207,9 +192,6 @@
 		 * @param string $sourceword 來源字串
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function get_start_subword($charscount, $sourceword) {
 			return substr($sourceword, 0, $charscount);
@@ -223,9 +205,6 @@
 		 * @param string $sourceword 來源字串
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function get_end_subword($charscount, $sourceword) {
 
@@ -234,16 +213,13 @@
 		
 		/**
 		 * 
-		 * 取得字串的第n1至第n2個字元
+		 * 取得字串的第n1至第n2個字元,
 		 *
-		 * @param int $first_nth
+		 * @param int $first_nth 1代表第一個字元
 		 * @param int $second_nth	 
 		 * @param string $sourceword 來源字串
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function get_start_end_subword($first_nth,$second_nth,$sourceword) {
 			$return_string=@substr($sourceword, $first_nth-1,$second_nth-$first_nth+1);
@@ -255,12 +231,9 @@
 		 * 
 		 * 將繁體中文字串轉為簡體中文字串
 		 *
-		 * @param string $zh_string 來源字串
+		 * @param string $zh_string 來源的繁體中文字
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function transform_zh_to_cn($zh_string) {
 			return iconv("gb2312", "UTF-8", iconv("BIG5", "gb2312", iconv("UTF-8", "BIG5", $zh_string)));
@@ -268,15 +241,18 @@
 
 		/**
 		 * 
-		 * 設定url的query string
-		 *
+		 * 變更url的query參數部分
 		 * @param string $the_url 
 		 * @param array $updated_params
 		 * @return string
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
+		 *
+		 * 舉例:
+		 * $the_url='http://www.xxxx.com.tw/index.php?a=1&b=2&c=3';
+		 * $the_new_url=myGlobal::set_url_params($the_url,array('a'=>'4','b'=>'5','c'=>'6'));
+		 * echo $the_new_url;
+		 * output為 http://www.xxxx.com.tw/index.php?a=4&b=5&c=6
+		 *
 		 */
 		static public function set_url_params($the_url, $updated_params) {
 			$result_string = '';
@@ -368,16 +344,15 @@
 				return $result_string;
 			}
 		}
+		
 		/**
 		 * 
-		 * 取得url的params
+		 * 取得url的query參數部分
 		 *
 		 * @param string $the_url 
 		 * @return Array
 		 * @throws Exception
-		 * @todo 
-		 * @since 2015-10-25
-		 * @author Bill Liu <bill@artiegroup.com.tw>
+		 *
 		 */
 		static public function get_url_params($the_url) {
 			$result_array = array();
@@ -396,6 +371,7 @@
 			parse_str($temp_query_string,$result_array);
 			return $result_array;
 		}
+		
 		/**
 		 * 
 		 * 取得自定義的全域變數
@@ -427,9 +403,6 @@
 		 * @param array $the_second_array 第二個陣列
 		 * @return array
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function two_dimension_array_merge($the_first_array, $the_second_array) {
 			if (
@@ -470,8 +443,26 @@
 			return $result_array;
 		}
 
-	   
-		
+		/**
+		 * 
+		 * 將特定字首字串及特定字尾字串的方式，去取得中間的字串
+		 *
+		 * @param array $source_string 要處理的來源字串
+		 * @param array $start_string 特定字首字串
+		 * @param array $end_string 特定字尾字串
+		 * @return string 中間得字串
+		 * @throws Exception
+		 * @todo 
+		 * @since 2014-12-07
+		 * @author Bill Liu <o7z3149o0@hotmail.com>
+		 *
+		 * 舉例:
+		 * $the_string='data_row_a80235_id';
+		 * $the_fetch_string=myGlobal::fetch_specific_string($the_string,'data_row_1','_id');
+		 * echo $the_fetch_string;
+		 * output為 a80235
+		 *
+		 */
 		static public function fetch_specific_string($source_string,$start_string,$end_string)
 		{
 			if(is_string($source_string)===false){
@@ -497,21 +488,53 @@
 			}
 		}
 		
+		/**
+		 * 
+		 * 若字串一開始有出現特定字串則移除掉
+		 *
+		 * @param array $source_string 要處理的來源字串
+		 * @param array $start_string 該特定字串
+		 * @return string 返回一個處理過後的新字串
+		 * @throws Exception
+		 *
+		 * 舉例:
+		 * $the_string='data_row_id_a80235';
+		 * $the_result_string=myGlobal::remove_start_string($the_string,'data_row_id_');
+		 * echo $the_result_string;
+		 * output為 a80235
+		 *
+		 */
 		static public function remove_start_string($source_string,$start_string)
 		{
 			if(is_string($source_string)===false){
-				alert('source_string argument error');
-				return;
+				
+				return '';
 			}
 			if(is_string($start_string)===false){
-				alert('start_string argument error');
-				return;
+				
+				return '';
 			}
 		
 			$start_string=preg_replace('/^'.preg_quote($start_string,'/').'/Dsu','',$source_string);
 			return $start_string;
 		}
 		
+		/**
+		 * 
+		 * 若字串結尾有出現特定字串則移除掉
+		 *
+		 * @param array $source_string 要處理的來源字串
+		 * @param array $end_string 該特定字串
+		 * @return string 返回一個處理過後的新字串
+		 * @throws Exception
+		 *
+		 * 舉例:
+		 * $the_string='a80235_data_row_id';
+		 * $the_result_string=myGlobal::remove_start_string($the_string,'_data_row_id');
+		 * echo $the_result_string;
+		 * output為 a80235
+		 *
+		 */
 		static public function remove_end_string($source_string,$end_string)
 		{
 			if(is_string($source_string)===false){
@@ -533,16 +556,13 @@
 		 *
 		 * @return array
 		 * @throws Exception
-		 * @todo 
-		 * @since 2014-12-07
-		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
 		static public function parse_http_user_agent() {
-			//若device不為空字串 代表裝置是手機
-		   $return_data=array(
-				'device'=>'',
-				'browser_type'=>'',
-				'browser_version'=>''
+			//偵測完後 會返回的陣列
+			$return_data=array(
+				'device'=>'',	//若為有長度的字串 代表裝置是非電腦(可能是平板或手機或...)
+				'browser_type'=>'',	//瀏覽器類型
+				'browser_version'=>'' //瀏覽器版本
 			);
 			if(stripos($_SERVER['HTTP_USER_AGENT'],"iPod")!==false){
 				$return_data['device']='iPod';
@@ -614,6 +634,15 @@
 			return $return_data;
 		}
 		
+		/**
+		 * 
+		 * 確保該變數為string型態的資料，也就是說任何資料型態的變數，經過
+		 * 該函數處理後，一定會返回string型態的資料
+		 *
+		 * @param $checked_var 要處理的變數
+		 * @return string
+		 * @throws Exception
+		 */
 		static public function ensure_string($checked_var) {
 			if (isset($checked_var)===false){
 				 return '';
@@ -626,6 +655,15 @@
 			return $checked_var;
 		}
 		
+		/**
+		 * 
+		 * 確保該變數為array型態的資料，也就是說任何資料型態的變數，經過
+		 * 該函數處理後，一定會返回array型態的資料
+		 *
+		 * @param $checked_var 要處理的變數
+		 * @return array
+		 * @throws Exception
+		 */
 		static public function ensure_array($checked_var) {
 			$return_array=array();
 			if (isset($checked_var)===false){
@@ -639,9 +677,6 @@
 			return $checked_var;
 		}
 		
-		/*
-		
-		*/
 		
 		/**
 		 * 
@@ -651,22 +686,24 @@
 		public function __destruct() {
 			//釋放成員
 		}
-
 	}
 
 
-
-	#檔案管理函式
+	/**
+	 * 常用的檔案操作函式庫
+	 */
 	class myFile
 	{
-	  
-
-		#▄▄▄▄▄▄▄▄▄建構函數▄▄▄▄▄▄▄▄▄ #
+		/**
+		 * 建構子
+		 */
 		public function __construct() {
 
-		}    
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 檢測本次所POST的資料是否超過伺服器限制 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#說明:輸入檔案路徑
+		}
+		
+		/**
+		 * 檢測POST過來的資料是否超過伺服器限制
+		 */
 		static public function is_legal_post_size()
 		{	
 			//伺服器所限制的post的byte數
@@ -692,8 +729,9 @@
 			
 		}
 		
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 判斷檔案是否存在 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#說明:輸入檔案路徑
+		/**
+		 * 判斷檔案是否存在
+		 */
 		static public function is_file_exist($file_path)
 		{	
 			if($fp = @fopen($file_path, "rb")){
@@ -701,13 +739,13 @@
 				return true;
 			}else{
 				return false;
-			}		
-		
+			}
 		}
 		
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 計算檔案大小 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#在windows下，filesize函式失效，故以此函式替代
-		#說明:knowfilesize(file路徑)，反回的大小單位為byte
+		/**
+		 * 計算檔案大小
+		 * 在windows下，filesize函式失效，故以此函式替代，反回的大小單位為byte
+		 */
 		static public function knowfilesize($file_path){
 			
 			if(self::is_file_exist($file_path)){
@@ -726,10 +764,12 @@
 			return strlen($body);
 		}
 		
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 下載檔案 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#下載檔案時,直接下載不開啟檔案
-		#說明:uploadfile_download(上傳檔案id,顯示用下載檔名)
-		#上傳檔案id 相對於專案根磁碟路徑的路徑
+		/**
+		 * 下載檔案
+		 * 下載檔案時,直接下載不開啟檔案
+		 * uploadfile_download(上傳檔案id,顯示用下載檔名)
+		 * 上傳檔案id 相對於專案根磁碟路徑的路徑
+		 */
 		static public function uploadfile_download($uploadfile_id,$custom_name='') {
 		
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
@@ -796,9 +836,11 @@
 			readfile($diskfilepath);
 			exit;
 		}
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#解析上載的檔案
-		#說明:在有上傳檔案的網頁 這個函式一定會先執行
+
+		/**
+		 * 檢測上載的檔案
+		 * 在有上傳檔案的網頁 這個函式一定會先執行
+		 */
 		static public function uploadfile_check($inputname,$check_rules){
 			//$check_rules["white_extensions"]
 			//$check_rules["maxfilesize"],$check_rules["minfilesize"]
@@ -951,9 +993,9 @@
 			return $file_attrs;
 		}
 		
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#
-		#說明:
+		/**
+		 * 處理檔案的上載
+		 */
 		static public function uploadfile_add($file_settings,$check_rules,$is_overwrite=true){
 			//$file_settings["inputname"]
 			//$file_settings["use"]
@@ -1075,9 +1117,9 @@
 			return $file_attrs;
 		}
 		
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄'
-		#
-		#說明:
+		/**
+		 * 變更檔名
+		 */
 		static public function uploadfile_rename($uploadfile_id,$to_name,$is_have_log=false,$is_overwrite=true,$connkey='conn1'){
 			$file_attrs=array();
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
@@ -1135,6 +1177,10 @@
 		
 			return $file_attrs;
 		}
+		
+		/**
+		 * 移動檔案
+		 */
 		static public function uploadfile_move($source_uploadfile_id,$destination_uploadfile_id,$is_have_log=true,$is_overwrite=false,$connkey='conn1'){
 			$file_attrs=array();
 			if(myGlobal::is_non_empty_string($source_uploadfile_id)){
@@ -1187,6 +1233,9 @@
 			return true;
 		}
 		
+		/**
+		 * 刪除檔案
+		 */
 		static public function uploadfile_remove($uploadfile_id,$connkey='conn1'){
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
 			
@@ -1205,6 +1254,10 @@
 			return @unlink($diskfilepath);
 				
 		}
+		
+		/**
+		 * 查看檔案
+		 */
 		static public function uploadfile_view($uploadfile_id,$connkey='conn1'){
 			$return_data=array();
 			if(myGlobal::is_non_empty_string($uploadfile_id)){
@@ -1220,6 +1273,10 @@
 
 			return $return_data;
 		}
+		
+		/**
+		 * 檢測檔案是否存在
+		 */
 		static public function uploadfile_isexist($uploadfile_id,$is_have_log=false,$connkey='conn1'){
 			$is_exist=false;
 			if($uploadfile_id){
@@ -1249,7 +1306,10 @@
 			return $is_exist;
 		}
 		
-		//檔案計算單位byte
+		
+		/**
+		 * 磁碟檔案 容量換算
+		 */
 		static public function v1_convert_to_bytenum($num,$fromunit){
 			$bytenum=0;	
 			if($fromunit=='KB'){
@@ -1263,6 +1323,10 @@
 			}
 			return $bytenum;
 		}
+		
+		/**
+		 * 磁碟檔案 容量換算
+		 */
 		static public function v1_convert_from_bytenum($num,$tounit){
 			$tounitnum=0;	
 			if($tounit=='KB'){
@@ -1277,6 +1341,9 @@
 			return $tounitnum;
 		}
 		
+		/**
+		 * 從uploadfile_id返回磁碟時體路徑
+		 */
 		static public function uploadfile_getdiskpath($uploadfile_id){
 			$diskpath='';
 			if($uploadfile_id==''){
@@ -1287,7 +1354,10 @@
 			return $diskpath;
 			 
 		}
-
+		
+		/**
+		 * 取得目前程式執行對應的url，不包含查詢參數
+		 */
 		static public function getnowurl(){
 			$urlpath='';
 			$get_protocol='';
@@ -1304,6 +1374,10 @@
 			return $urlpath;
 			 
 		}
+		
+		/**
+		 * 取得目前程式執行的url，含查詢參數
+		 */
 		static public function get_now_full_url(){
 			$urlpath='';
 			$get_protocol='';
@@ -1321,6 +1395,9 @@
 			 
 		}
 		
+		/**
+		 * 取得檔案的副檔名
+		 */
 		static public function get_file_extension($file_name){
 			$file_extension='';
 			if(strrchr($file_name,".")===false){
@@ -1343,6 +1420,10 @@
 			return $file_extension;
 			 
 		}
+		
+		/**
+		 * 取得指定url的內容
+		 */
 		static public function get_remote_file($fileurl){
 			$return_content='';
 			$headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';
@@ -1373,6 +1454,10 @@
 
 			 return $return_content;
 		}
+		
+		/**
+		 * 確保檔案名稱是合法的
+		 */
 		static public function get_security_filename($filename,$is_have_dir=false){
 			$return_data='';
 			if(myGlobal::is_solid_string($filename)){
@@ -1406,14 +1491,15 @@
 			$temp_file_part=preg_replace('/[^A-Za-z0-9_]/', '_',$temp_file_part);
 			return $temp_file_part;
 		}
-		/*
-			$params['dir_name']
-			$params['main_name_prefix']
-			$params['main_name']
-			$params['main_name_suffix']
-			$params['extension']
-			
-		*/
+
+		/**
+		 * 根據傳入的參數 去變更檔案路徑
+		 * $params['dir_name']
+		 *	$params['main_name_prefix']
+		 *	$params['main_name']
+		 *	$params['main_name_suffix']
+		 *	$params['extension']
+		 */
 		static public function get_new_filename($filename,$params=array()){
 			$return_data='';
 			if(myGlobal::is_solid_string($filename)){
@@ -1497,6 +1583,9 @@
 	}
 	
 	
+	/**
+	 * 常用的處理圖片的函式庫
+	 */
 	class myImage{
 
 
@@ -1505,8 +1594,10 @@
 
 		}
 
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄讀取BMP圖檔，輸出資源 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-		#EX:imagecreatefrombmp(來源圖檔路徑)，傳回值為 資源 或 FALSE   
+		/**
+		 * 讀取BMP圖檔，輸出資源
+		 * imagecreatefrombmp(來源圖檔路徑)，傳回值為 資源 或 FALSE
+		 */	
 		static function imagecreatefrombmp($filename) { 
 			// Ouverture du fichier en mode binaire 
 			if ( ! $f1 = @fopen ($filename, "rb")) return FALSE ; 
@@ -1578,12 +1669,11 @@
 			return $res ; 
 		} 
 		
-		
-		 
-		#▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄壓縮圖片 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-		#EX:easy_process_compression，傳回值為資訊陣列
-		#params['position'] params['coordinate']
-		
+		/**
+		 * 壓縮圖片
+		 * easy_process_compression，傳回值為資訊陣列
+		 * params['position'] params['coordinate']
+		 */	
 		static function easy_process_compression($uploadfile_id,$about_info=array(),$type='') { 
 			$return_data=array(
 				'is_success'=>'1',
@@ -1761,88 +1851,89 @@
 
 		}
 	}
+	
+	/**
+	 * 常用的處理日期的函式庫
+	 */
 	class myDatetime {
-
-			/**
-			 * 
-			 * 建構子
-			 * 
-			 */
-			public function __construct() {
-				
-			}
+		/**
+		 * 
+		 * 建構子
+		 * 
+		 */
+		public function __construct() {
 			
-			
-			 /**
-			 * 
-			 * 將日期數字格式字串(20141207063300) 轉為 自定義的日期格式字串
-			 *
-			 * @param string $datebigint 欲轉換之日期數字格式字串
-			 * @param string $the_format 
-			 * @param string $emptystring 若$datebigint為空 則呈現該字串
-			 * @return array
-			 * @throws Exception
-			 * @todo 
-			 * @since 2014-12-07
-			 * @author Bill Liu <o7z3149o0@hotmail.com>
-			 */
-			static public function datebigint_formattedstring($datebigint, $the_format, $emptystring = '') {
-				$returnstring = $emptystring;
-				if (myGlobal::is_non_empty_string($datebigint) && $datebigint !== '0') {
-					sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
-
-					$returnstring = str_replace(
-							array('Y', 'm', 'd', 'H', 'i', 's'), array($year, $month, $day, $hour, $minute, $second), $the_format
-					);
-				}
-				return $returnstring;
-			}
-
-			 /**
-			 * 
-			 * 解析 日期數字格式字串(20141207063300) 
-			 *
-			 * @param string $datebigint 欲轉換之日期數字格式字串
-			 * @return array 索引為year,month,day,hour,minute,second
-			 * @throws Exception
-			 * @todo 
-			 * @since 2014-12-07
-			 * @author Bill Liu <o7z3149o0@hotmail.com>
-			 */
-			static public function datebigint_parse($datebigint) {
-				$return_array=array();
-				if (myGlobal::is_non_empty_string($datebigint)) {
-					sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
-					if($day && $day!='00' ){
-					
-					}else{
-						$day=1;
-					}
-					$the_timestamp=mktime((int)$hour,(int)$minute,(int)$second,(int)$month,(int)$day,(int)$year);
-					$the_same_month_first_day_timestamp=mktime(0,0,0,(int)$month,1,(int)$year);
-					$return_array['Y']=$year;
-					$return_array['m']=$month;
-					$return_array['d']=$day;
-					$return_array['H']=$hour;
-					$return_array['i']=$minute;
-					$return_array['s']=$day;
-					$return_array['M']=date('M',$the_timestamp);
-					$return_array['t']=date('t',$the_timestamp);
-					$return_array['same_month_first_day_w']=date('w',$the_same_month_first_day_timestamp);
-				}
-				 return $return_array;
-			}
-
-		   /**
-			 * 
-			 * 解構子
-			 *
-			 */
-			public function __destruct() {
-				//釋放成員
-			}
-
 		}
+		
+		
+		 /**
+		 * 
+		 * 將日期數字格式字串(20141207063300) 轉為 自定義的日期格式字串
+		 *
+		 * @param string $datebigint 欲轉換之日期數字格式字串
+		 * @param string $the_format 
+		 * @param string $emptystring 若$datebigint為空 則呈現該字串
+		 * @return array
+		 * @throws Exception
+		 */
+		static public function datebigint_formattedstring($datebigint, $the_format, $emptystring = '') {
+			$returnstring = $emptystring;
+			if (myGlobal::is_non_empty_string($datebigint) && $datebigint !== '0') {
+				sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
+
+				$returnstring = str_replace(
+						array('Y', 'm', 'd', 'H', 'i', 's'), array($year, $month, $day, $hour, $minute, $second), $the_format
+				);
+			}
+			return $returnstring;
+		}
+
+		 /**
+		 * 
+		 * 解析 日期數字格式字串(20141207063300) 
+		 *
+		 * @param string $datebigint 欲轉換之日期數字格式字串
+		 * @return array 索引為year,month,day,hour,minute,second
+		 * @throws Exception
+		 */
+		static public function datebigint_parse($datebigint) {
+			$return_array=array();
+			if (myGlobal::is_non_empty_string($datebigint)) {
+				sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
+				if($day && $day!='00' ){
+				
+				}else{
+					$day=1;
+				}
+				$the_timestamp=mktime((int)$hour,(int)$minute,(int)$second,(int)$month,(int)$day,(int)$year);
+				$the_same_month_first_day_timestamp=mktime(0,0,0,(int)$month,1,(int)$year);
+				$return_array['Y']=$year;
+				$return_array['m']=$month;
+				$return_array['d']=$day;
+				$return_array['H']=$hour;
+				$return_array['i']=$minute;
+				$return_array['s']=$day;
+				$return_array['M']=date('M',$the_timestamp);
+				$return_array['t']=date('t',$the_timestamp);
+				$return_array['same_month_first_day_w']=date('w',$the_same_month_first_day_timestamp);
+			}
+			 return $return_array;
+		}
+
+	   /**
+		 * 
+		 * 解構子
+		 *
+		 */
+		public function __destruct() {
+			//釋放成員
+		}
+
+	}
+	
+	/**
+	* 確保從前端傳來的資料是最原始的資料
+	*/
 	function v1_get_raw_gpc($gpcdata) {
 		$ResultString='';
 		
@@ -1856,6 +1947,15 @@
 		return $ResultString;
 	
 	}
+	
+	/**
+	* 確保字串在sql字串裡就是單純的字串，不會干擾sql的正常運作
+	* 為了讓執行sql時有更多的彈性，於是自行組合sql，然後送交執行。
+	* 自行組合sql，須考慮到sql injection的問題
+	* 舉例:
+	* $the_sql="SELECT product_name,product_desc FROM product ".
+	* "WHERE product_id='.v1_escape_for_sql($_GET['id']).'";
+	*/
 	function v1_escape_for_sql($neverprocess) {	
 		$ResultString='';
 		
@@ -1884,10 +1984,18 @@
 		
 		return $ResultString;
 	}
+	
+	/**
+	* 確保字串在html裡就是單純的字串，不會干擾瀏覽器的正常運作
+	*/
 	function v1_escape_for_html($strInput) {
 		$ResultString=htmlspecialchars($strInput,ENT_QUOTES);
 		return $ResultString;
 	}
+	
+	/**
+	* 確保html裡沒有非法的腳本語法
+	*/
 	function v1_escape_for_xss($strInput) {
 			$ResultString='';
 			$ResultString=preg_replace(
@@ -1903,7 +2011,13 @@
 			return $ResultString;
 	}
 	
-	//$ispure 在網頁呈現時 資料是否為單純文字
+	/**
+	 * 確保client端傳過來得資料，不會干擾網站正常的運行
+	 * 
+	 * 在我的架構裡，是資料存到資料庫前，就會做相關資安的處理。
+	 * 而不是日後，從資料庫抓出資料，要顯示前，在做資安的處理。
+	 * 
+	 */
 	function v1_process_external_data($thestring,$ispure=true) {
 		$ResultString=trim($thestring);
 		
