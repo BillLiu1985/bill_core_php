@@ -332,7 +332,7 @@
 							$overwrite_params[$param_name] = $param_value;
 						}
 						$new_query_parts = array();
-						foreach ($overwrite_param as $param_name => $param_value) {
+						foreach ($overwrite_params as $param_name => $param_value) {
 							$new_query_parts[] = $param_name . '=' . $param_value;
 						}
 						if (count($new_query_parts) == 0) {
