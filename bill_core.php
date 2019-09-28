@@ -8,7 +8,7 @@
 	 * 須先抓取專案根目錄的磁碟路徑
 	 * 視bill_core.php所在位置，作撰寫(視本檔所在位置做變動)
 	 */
-	define('ProjectRootDisk', dirname(dirname(__FILE__))."/");
+	define('ProjectRootDisk', dirname(__FILE__)."/");
 	
 	/**
 	 * 需先設定專案根目錄的URL路徑
@@ -571,6 +571,49 @@
 		
 		/**
 		 * 
+		 * 確保該變數為string型態的資料，也就是說任何資料型態的變數，經過
+		 * 該函數處理後，一定會返回string型態的資料
+		 *
+		 * @param $checked_var 要處理的變數
+		 * @return string
+		 * @throws Exception
+		 */
+		static public function ensure_string($checked_var) {
+			if (isset($checked_var)===false){
+				 return '';
+			}
+			
+			if (gettype($checked_var) !== 'string') {
+				return '';
+			}
+		   
+			return $checked_var;
+		}
+		
+		/**
+		 * 
+		 * 確保該變數為array型態的資料，也就是說任何資料型態的變數，經過
+		 * 該函數處理後，一定會返回array型態的資料
+		 *
+		 * @param $checked_var 要處理的變數
+		 * @return array
+		 * @throws Exception
+		 */
+		static public function ensure_array($checked_var) {
+			$return_array=array();
+			if (isset($checked_var)===false){
+				 return $return_array;
+			}
+			
+			if (gettype($checked_var) !== 'array') {
+				return $return_array;
+			}
+		   
+			return $checked_var;
+		}
+		
+		/**
+		 * 
 		 * 偵測網頁瀏覽者之環境
 		 *
 		 * @return array
@@ -652,48 +695,187 @@
 			return $return_data;
 		}
 		
-		/**
+		 /**
 		 * 
-		 * 確保該變數為string型態的資料，也就是說任何資料型態的變數，經過
-		 * 該函數處理後，一定會返回string型態的資料
+		 * 處理header陣列符合curl要求
 		 *
-		 * @param $checked_var 要處理的變數
-		 * @return string
+		 * @param string $value 目標url
+		 * @param string $key
+		 * @param string $custom_data
+		 * @return void
 		 * @throws Exception
+		 * @todo 
+		 * @since 2014-12-07
+		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
-		static public function ensure_string($checked_var) {
-			if (isset($checked_var)===false){
-				 return '';
-			}
-			
-			if (gettype($checked_var) !== 'string') {
-				return '';
-			}
-		   
-			return $checked_var;
+		static public function _process_curl_headers(&$value, $key, $custom_data = '') {
+			$value = $key . ':' . $value;
 		}
 		
 		/**
 		 * 
-		 * 確保該變數為array型態的資料，也就是說任何資料型態的變數，經過
-		 * 該函數處理後，一定會返回array型態的資料
+		 * 發除http的get請求 
 		 *
-		 * @param $checked_var 要處理的變數
-		 * @return array
+		 * @param string $dt_url 目標url
+		 * @param array|string $body_content
+		 * @param array $headers
+		 * @param bool $is_use_ssl
+		 * @param bool $is_debug_mode
+		 * @return string
 		 * @throws Exception
+		 * @todo 
+		 * @since 2014-12-07
+		 * @author Bill Liu <o7z3149o0@hotmail.com>
 		 */
-		static public function ensure_array($checked_var) {
-			$return_array=array();
-			if (isset($checked_var)===false){
-				 return $return_array;
+		static public function http_send_get_request($dt_url, $body_content = '', $headers = array(), $is_use_ssl = false,$ssl_info=array(), $is_debug_mode = false) {
+			if (
+					self::is_solid_string($dt_url)
+			) {
+				
+			} else {
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Beacuse param error.');
 			}
-			
-			if (gettype($checked_var) !== 'array') {
-				return $return_array;
+
+
+			if (is_array($body_content)) {
+				$dt_url.='?' . http_build_query($body_content,'','&');
 			}
-		   
-			return $checked_var;
+
+			$headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0';
+
+			$return_string = '';
+			$header_sent_string = '';
+			array_walk($headers, array('myGlobal', '_process_curl_headers'));
+
+			$the_curl_connect = null;
+
+			$the_curl_connect = curl_init();
+			if ($the_curl_connect === false) {
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Beacuse curl error.');
+			}
+			$options = array(
+				CURLOPT_POST => '0',
+				CURLOPT_RETURNTRANSFER => '1',
+				CURLOPT_BINARYTRANSFER => '1',
+				CURLOPT_FOLLOWLOCATION => '1',
+				CURLOPT_NOBODY => '0',
+				CURLOPT_URL => $dt_url,
+				CURLOPT_HTTPHEADER => $headers
+			);
+			if($is_use_ssl){
+				$options[CURLOPT_SSL_VERIFYHOST]=$ssl_info['CURLOPT_SSL_VERIFYHOST'];
+				$options[CURLOPT_CAINFO]=$ssl_info['CURLOPT_CAINFO'];
+				$options[CURLOPT_COOKIEJAR]=$ssl_info['CURLOPT_COOKIEJAR'];
+				$options[CURLOPT_COOKIEFILE]=$ssl_info['CURLOPT_COOKIEFILE'];
+				$options[CURLOPT_SSL_VERIFYPEER] = $ssl_info['CURLOPT_SSL_VERIFYPEER'];
+			}
+
+			if ($is_debug_mode) {
+				$options[CURLOPT_VERBOSE] = '1';
+				$options[CURLINFO_HEADER_OUT] = '1';
+				$options[CURLOPT_HEADER] = '1';
+			} else {
+				$options[CURLOPT_VERBOSE] = '0';
+				$options[CURLINFO_HEADER_OUT] = '0';
+				$options[CURLOPT_HEADER] = '0';
+			}
+			curl_setopt_array($the_curl_connect, $options);
+
+			$return_string = curl_exec($the_curl_connect);
+			if ($return_string === false) {
+				$temp_string = 'Call ' . __FUNCTION__ . ' fail.Beacuse ' . curl_error($the_curl_connect);
+				curl_close($the_curl_connect);
+				throw new Exception($temp_string);
+			} else {
+				if ($is_debug_mode) {
+					$header_send_string = curl_getinfo($the_curl_connect, CURLINFO_HEADER_OUT) . "\n";
+				}
+				curl_close($the_curl_connect);
+			}
+
+			return $header_send_string.$return_string;
 		}
+		
+		/**
+		 * 
+		 * 發除http的post請求 
+		 *
+		 * @param string $dt_url 目標url
+		 * @param array|string $body_content
+		 * @param array $headers
+		 * @param bool $is_use_ssl
+		 * @param bool $is_debug_mode
+		 * @return string
+		 * @throws Exception
+		 * @todo 
+		 * @since 2014-12-07
+		 * @author Bill Liu <o7z3149o0@hotmail.com>
+		 */
+		static public function http_send_post_request($dt_url, $body_content = '', $headers = array(), $is_use_ssl= false,$ssl_info=array(), $is_debug_mode = false) {
+			if (
+					self::is_solid_string($dt_url)
+			) {
+				
+			} else {
+				throw new Exception('Call ' . __FUNCTION__ . 'fail.Beacuse param error.');
+			}
+
+			if (is_array($body_content)) {
+				$body_content =  http_build_query($body_content,'','&');
+			}
+
+			$headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0';
+
+			$return_string = '';
+			$header_sent_string = '';
+			array_walk($headers, array('myGlobal', '_process_curl_headers'));
+			$the_curl_connect = null;
+
+			$the_curl_connect = curl_init();
+			if ($the_curl_connect === false) {
+				throw new Exception('Call ' . __FUNCTION__ . 'fail.Beacuse curl error.');
+			}
+			$options = array(
+				CURLOPT_POST => '1',
+				CURLOPT_RETURNTRANSFER => '1',
+				CURLOPT_BINARYTRANSFER => '1',
+				CURLOPT_FOLLOWLOCATION => '1',
+				CURLOPT_NOBODY => '0',
+				CURLOPT_URL => $dt_url,
+				CURLOPT_HTTPHEADER => $headers,
+				CURLOPT_POSTFIELDS => $body_content,
+			);
+			if ($is_use_ssl) {
+				$options[CURLOPT_SSL_VERIFYHOST] = $ssl_info['CURLOPT_SSL_VERIFYHOST'];
+				$options[CURLOPT_CAINFO] = $ssl_info['CURLOPT_CAINFO'];
+				$options[CURLOPT_SSL_VERIFYPEER] = $ssl_info['CURLOPT_SSL_VERIFYPEER'];
+				$options[CURLOPT_COOKIEJAR] = $ssl_info['CURLOPT_COOKIEJAR'];
+				$options[CURLOPT_COOKIEFILE] = $ssl_info['CURLOPT_COOKIEFILE'];
+			}
+			if ($is_debug_mode) {
+				$options[CURLOPT_VERBOSE] = '1';
+				$options[CURLINFO_HEADER_OUT] = '1';
+				$options[CURLOPT_HEADER] = '1';
+			} else {
+				$options[CURLOPT_VERBOSE] = '0';
+				$options[CURLINFO_HEADER_OUT] = '0';
+				$options[CURLOPT_HEADER] = '0';
+			}
+			curl_setopt_array($the_curl_connect, $options);
+
+			$return_string = curl_exec($the_curl_connect);
+			if ($return_string === false) {
+				curl_close($the_curl_connect);
+				throw new Exception('Call ' . __FUNCTION__ . 'fail.Beacuse connect fail.');
+			} else {
+				if ($is_debug_mode) {
+					$header_send_string = curl_getinfo($the_curl_connect, CURLINFO_HEADER_OUT) . "\n";
+				}
+				curl_close($the_curl_connect);
+			}
+			return $header_sent_string . $return_string;
+		}
+
 		
 		
 		/**
