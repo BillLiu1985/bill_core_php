@@ -118,7 +118,7 @@
 		
 		/**
 		 * 
-		 * 檢查輸入的值是否為數字型態
+		 * 檢查輸入的值是否為數字型態，若為0也會返回true
 		 *
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
@@ -138,7 +138,17 @@
 		 * @throws Exception
 		 */
 		static public function random_word($wordlength, $is_number = false) {
-
+			if(is_integer($wordlength)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $wordlength error');
+			}
+			if(is_bool($is_number)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $is_number error');
+			}
+			
 			$sGenerator = "";
 
 			if ($is_number) {
@@ -168,6 +178,17 @@
 		 * @return bool
 		 */
 		static public function is_start_with($subword, $testword) {
+			if(self::is_solid_string($subword)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $subword error');
+			}
+			if(self::is_solid_string($testword)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $testword error');
+			}
+			
 			if (preg_match('/^' . preg_quote($subword, '/') . '/Dsu', $testword) == 0) {
 				return false;
 			} else {
@@ -184,6 +205,17 @@
 		 * @return bool
 		 */
 		static public function is_end_with($subword, $testword) {
+			if(self::is_solid_string($subword)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $subword error');
+			}
+			if(self::is_solid_string($testword)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $testword error');
+			}
+
 			if (preg_match('/' . preg_quote($subword, '/') . '$/Dsu', $testword) == 0) {
 				return false;
 			} else {
@@ -218,6 +250,17 @@
 		 * @throws Exception
 		 */
 		static public function get_start_subword($charscount, $sourceword) {
+			if(is_integer($charscount) && $charscount>0 ){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $charscount error');
+			}
+			
+			if(is_string($sourceword)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $sourceword error');
+			}
+
+
 			return substr($sourceword, 0, $charscount);
 		}
 
@@ -231,6 +274,15 @@
 		 * @throws Exception
 		 */
 		static public function get_end_subword($charscount, $sourceword) {
+			if(is_integer($charscount)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $charscount error');
+			}
+
+			if(is_string($sourceword)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $sourceword error');
+			}
 
 			return substr($sourceword, -1 * $charscount);
 		}
@@ -246,6 +298,20 @@
 		 * @throws Exception
 		 */
 		static public function get_start_end_subword($first_nth,$second_nth,$sourceword) {
+			if(is_integer($first_nth) && $first_nth>0 ){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $first_nth error');
+			}
+			if(is_integer($second_nth) && $second_nth>0 && $second_nth>=$first_nth ){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $second_nth error');
+			}
+			
+			if(is_string($sourceword)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $sourceword error');
+			}
+
 			$return_string=@substr($sourceword, $first_nth-1,$second_nth-$first_nth+1);
 			$return_string=(string)$return_string;
 			return $return_string;
@@ -260,6 +326,11 @@
 		 * @throws Exception
 		 */
 		static public function transform_zh_to_cn($zh_string) {
+			if(is_string($zh_string)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $zh_string error');
+			}
+
 			return iconv("gb2312", "UTF-8", iconv("BIG5", "gb2312", iconv("UTF-8", "BIG5", $zh_string)));
 		}
 
@@ -279,12 +350,19 @@
 		 *
 		 */
 		static public function set_url_params($the_url, $updated_params) {
-			$result_string = '';
-			if (self::is_non_empty_string($the_url) && is_array($updated_params)) {
+			if (self::is_solid_string($the_url)) {
 				
-			} else {
-				return $result_string;
+			}else {
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_url error');
 			}
+
+			if (is_array($updated_params)) {
+				
+			}else {
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $updated_params error');
+			}
+
+			$result_string = '';
 			$temp_splits = explode('?', $the_url);
 
 
@@ -378,12 +456,13 @@
 		 *
 		 */
 		static public function get_url_params($the_url) {
-			$result_array = array();
-			if (self::is_non_empty_string($the_url)) {
+			if (self::is_solid_string($the_url)) {
 				
-			} else {
-				return $result_array;
+			}else {
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_url error');
 			}
+
+			$result_array = array();
 			$temp_query_string=parse_url($the_url, PHP_URL_QUERY);
 			 if (self::is_non_empty_string($temp_query_string)) {
 				
@@ -428,24 +507,25 @@
 		 * @throws Exception
 		 */
 		static public function two_dimension_array_merge($the_first_array, $the_second_array) {
-			if (
-					self::is_non_empty_array($the_first_array) &&
-					self::is_non_empty_array($the_second_array)
-			) {
-				
-			} else {
-				throw new Exception('param error');
+			if(myGlobal::is_solid_array($the_first_array)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_first_array error');
 			}
+			if(myGlobal::is_solid_array($the_second_array)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_second_array error');
+			}
+			
 			$result_array = array();
 
 			foreach ($the_second_array as $array_key => $array_value) {
 				if (is_array($array_value) === false) {
-					throw new Exception('param error');
+					throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $array_value error');
 				}
 
 				if (array_key_exists($array_key, $the_first_array)) {
 					if ($the_first_array[$array_key] === false) {
-						throw new Exception('param error');
+						throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_first_array error');
 					}
 					$result_array[$array_key] = array_merge($the_first_array[$array_key], $array_value);
 				} else {
@@ -454,7 +534,7 @@
 			}
 			foreach ($the_first_array as $array_key => $array_value) {
 				if (is_array($array_value) === false) {
-					throw new Exception('param error');
+					throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_first_array error');
 				}
 
 				if (array_key_exists($array_key, $result_array)) {
@@ -484,17 +564,19 @@
 		 */
 		static public function fetch_specific_string($source_string,$start_string,$end_string)
 		{
-			if(is_string($source_string)===false){
-				alert('source_string argument error');
-				return;
+			if(is_string($source_string)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $source_string error');
 			}
-			if(is_string($start_string)===false){
-				alert('start_string argument error');
-				return;
+
+			if(is_string($start_string)){	
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $start_string error');
 			}
-			if(is_string($end_string)===false){
-				alert('end_string argument error');
-				return;
+
+			if(is_string($end_string)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $end_string error');
 			}
 			
 			$temp_reg='/^'.preg_quote($start_string,'/').'(.+)'.preg_quote($end_string,'/').'$/Dsu';
@@ -525,14 +607,18 @@
 		 */
 		static public function remove_start_string($source_string,$start_string)
 		{
-			if(is_string($source_string)===false){
+			if(self::is_solid_string($source_string)){
 				
-				return '';
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $source_string error');
 			}
-			if(is_string($start_string)===false){
+			if(self::is_solid_string($start_string)){
 				
-				return '';
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $start_string error');
 			}
+
+			
 		
 			$start_string=preg_replace('/^'.preg_quote($start_string,'/').'/Dsu','',$source_string);
 			return $start_string;
@@ -556,13 +642,16 @@
 		 */
 		static public function remove_end_string($source_string,$end_string)
 		{
-			if(is_string($source_string)===false){
-				alert('source_string argument error');
-				return;
+			if(is_string($source_string)){
+				
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $source_string error');
 			}
-			if(is_string($end_string)===false){
-				alert('end_string argument error');
-				return;
+
+			if(is_string($end_string)){
+
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $end_string error');
 			}
 		
 			$end_string=preg_replace('/'.preg_quote($end_string,'/').'$/Dsu','',$source_string);
@@ -752,6 +841,10 @@
 		 */
 		static public function is_file_exist($file_path)
 		{	
+			if(myGlobal::is_solid_string($file_path)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $file_path error');
+			}
 			if($fp = @fopen($file_path, "rb")){
 				fclose($fp);
 				return true;
@@ -765,7 +858,11 @@
 		 * 在windows下，filesize函式失效，故以此函式替代，反回的大小單位為byte
 		 */
 		static public function knowfilesize($file_path){
-			
+			if(myGlobal::is_solid_string($file_path)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $file_path error');
+			}
+
 			if(self::is_file_exist($file_path)){
 				
 			}else{
@@ -789,10 +886,15 @@
 		 */
 		static public function uploadfile_download($uploadfile_id,$custom_name='') {
 		
-			if(myGlobal::is_non_empty_string($uploadfile_id)){
+			if(myGlobal::is_solid_string($uploadfile_id)){
 			}else{
-				throw new Exception("error");
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
 			}
+			if(is_string($custom_name)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $custom_name error');
+			}
+
 			
 			
 			$diskfilepath=self::uploadfile_getdiskpath($uploadfile_id);
@@ -870,6 +972,15 @@
 			//$check_rules['pic_width_fixed'],$check_rules['pic_height_fixed']
 			//返回的結果若型態為字串，則檢查未通過
 			//返回的結果若型態為陣列，則檢查通過，並返回該檔案相關資訊
+			if(myGlobal::is_solid_string($inputname)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $inputname error');
+			}	
+			if(is_array($check_rules)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $check_rules error');
+			}
+
 			$checkresult='';
 			
 			//檢查上傳的檔案
@@ -1030,7 +1141,18 @@
 			//$check_rules['pic_width_min'],$check_rules['pic_height_min']
 			//$check_rules['pic_width_max'],$check_rules['pic_height_max']
 			//$check_rules['pic_width_fixed'],$check_rules['pic_height_fixed']
-			
+			if(myGlobal::is_solid_array($file_settings)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $file_settings error');
+			}
+			if(is_array($check_rules)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $check_rules error');
+			}
+			if(is_bool($is_overwrite)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $is_overwrite error');
+			}
 			
 			$file_attrs=null;
 			$checkresult=self::uploadfile_check(
@@ -1138,26 +1260,26 @@
 		 * 變更檔名
 		 */
 		static public function uploadfile_rename($uploadfile_id,$to_name,$is_overwrite=true){
-			$file_attrs=array();
-			if(myGlobal::is_non_empty_string($uploadfile_id)){
-			
+			if(myGlobal::is_solid_string($uploadfile_id)){
 			}else{
-				throw new Exception('$uploadfile_id param error');
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
 			}
-			
-			if(myGlobal::is_non_empty_string($to_name)){
-			
+			if(myGlobal::is_solid_string($to_name)){
 			}else{
-				throw new Exception('$to_name param error');
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $to_name error');
 			}
-			
+			if(is_bool($is_overwrite)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $is_overwrite error');
+			}
+
 			if(self::uploadfile_isexist($uploadfile_id)){
 			
 			}else{
 				
 				throw new Exception(ProjectRootDisk.$uploadfile_id.' is not exist');
 			}
-			
+			$file_attrs=array();
 			$the_extension_part=self::get_file_extension($uploadfile_id);
 			$new_uploadfile_id=dirname($uploadfile_id).'/'.$to_name.$the_extension_part;
 			
@@ -1186,19 +1308,21 @@
 		 * 移動檔案
 		 */
 		static public function uploadfile_move($source_uploadfile_id,$destination_uploadfile_id,$is_overwrite=false){
-			$file_attrs=array();
-			if(myGlobal::is_non_empty_string($source_uploadfile_id)){
-			
+			if(myGlobal::is_solid_string($source_uploadfile_id)){
 			}else{
-				return false;
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $source_uploadfile_id error');
 			}
 			
-			if(myGlobal::is_non_empty_string($destination_uploadfile_id)){
-			
+			if(myGlobal::is_solid_string($destination_uploadfile_id)){
 			}else{
-				return false;
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $destination_uploadfile_id error');
 			}
-			
+
+			if(is_bool($is_overwrite)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $is_oberwrite error');
+			}
+		
 			if(self::uploadfile_isexist($source_uploadfile_id)){
 			
 			}else{
@@ -1226,11 +1350,11 @@
 		 * 刪除檔案
 		 */
 		static public function uploadfile_remove($uploadfile_id){
-			if(myGlobal::is_non_empty_string($uploadfile_id)){
-			
+			if(myGlobal::is_solid_string($uploadfile_id)){
 			}else{
-				return true;
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
 			}
+
 			
 			$diskfilepath=self::uploadfile_getdiskpath($uploadfile_id);
 			if(self::is_file_exist($diskfilepath)){
@@ -1248,6 +1372,11 @@
 		 * 檢測檔案是否存在
 		 */
 		static public function uploadfile_isexist($uploadfile_id){
+			if(myGlobal::is_solid_string($uploadfile_id)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
+			}
+
 			$is_exist=false;
 			if($uploadfile_id){
 			}else{
@@ -1287,6 +1416,15 @@
 		 * 磁碟檔案 容量換算
 		 */
 		static public function v1_convert_from_bytenum($num,$tounit){
+			if(myGlobal::is_solid_number($num)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $num error');
+			}
+			if(myGlobal::is_solid_string($tounit)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $tounit error');
+			}
+
 			$tounitnum=0;	
 			if($tounit=='KB'){
 				$tounitnum=round($num/1024,2);
@@ -1304,6 +1442,11 @@
 		 * 從uploadfile_id返回磁碟時體路徑
 		 */
 		static public function uploadfile_getdiskpath($uploadfile_id){
+			if(myGlobal::is_solid_string($uploadfile_id)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
+			}
+
 			$diskpath='';
 			if($uploadfile_id==''){
 				return $diskpath;
@@ -1358,6 +1501,11 @@
 		 * 取得檔案的副檔名
 		 */
 		static public function get_file_extension($file_name){
+			if(myGlobal::is_solid_string($file_name)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $file_name error');
+			}
+
 			$file_extension='';
 			if(strrchr($file_name,".")===false){
 				
@@ -1384,6 +1532,10 @@
 		 * 取得指定url的圖片資料
 		 */
 		static public function get_remote_file($fileurl){
+			if(myGlobal::is_solid_string($fileurl)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $fileurl error');
+			}
 			$return_content='';
 			$headers[] = 'Accept: image/gif, image/x-bitmap, image/jpeg, image/pjpeg';
 			$headers[] = 'Connection: Keep-Alive';
@@ -1418,12 +1570,16 @@
 		 * 確保檔案名稱是合法的
 		 */
 		static public function get_security_filename($filename,$is_have_dir=false){
-			$return_data='';
-			if(myGlobal::is_solid_string($filename)){
 			
+			if(myGlobal::is_solid_string($filename)){
 			}else{
-				return $return_data;
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $filename error');
 			}
+			if(is_bool($is_have_dir)){
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $is_have_dir error');
+			}
+			
+			$return_data='';
 			$filename=trim($filename);
 			$temp_file_extension=self::get_file_extension($filename);
 			$temp_file_main=myGlobal::fetch_specific_string($filename,'','.'.$temp_file_extension);
@@ -1447,6 +1603,11 @@
 			return $return_data;
 		}
 		static public function process_for_secure($temp_file_part){
+			if(myGlobal::is_solid_string($temp_file_part)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $temp_file_part error');
+			}
+
 			$temp_file_part=preg_replace('/[^A-Za-z0-9_]/', '_',$temp_file_part);
 			return $temp_file_part;
 		}
@@ -1460,13 +1621,18 @@
 		 *	$params['extension']
 		 */
 		static public function get_new_filename($filename,$params=array()){
-			$return_data='';
 			if(myGlobal::is_solid_string($filename)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $filename error');
+			}
+			if(myGlobal::is_solid_array($params)){
 			
 			}else{
-				return $return_data;
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $params error');
 			}
-			
+
+
+			$return_data='';
 			$temp_array=pathinfo($filename);
 			$original_dir_name=$temp_array['dirname'];
 			$original_main_name=$temp_array['filename'];
@@ -1558,6 +1724,11 @@
 		 * imagecreatefrombmp(來源圖檔路徑)，傳回值為 資源 或 FALSE
 		 */	
 		static function imagecreatefrombmp($filename) { 
+			if(myGlobal::is_solid_string($filename)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $filename error');
+			}
+
 			// Ouverture du fichier en mode binaire 
 			if ( ! $f1 = @fopen ($filename, "rb")) return FALSE ; 
 			// 1 : Chargement des ent?tes FICHIER 
@@ -1634,6 +1805,18 @@
 		 * params['position'] params['coordinate']
 		 */	
 		static function easy_process_compression($uploadfile_id,$about_info=array(),$type='') { 
+			if(myGlobal::is_solid_string($uploadfile_id)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $uploadfile_id error');
+			}
+			if(myGlobal::is_solid_array($about_info)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $about_info error');
+			}
+			if(is_string($type)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $type error');
+			}	
 			$return_data=array(
 				'is_success'=>'1',
 				'display_message'=>'系統忙碌',
@@ -1930,16 +2113,13 @@
 			$ResultString
 		);
 		
-		$tmpresult= mysql_real_escape_string($neverprocess);
 		
-		if($tmpresult){
-		}else{
-			$ResultString=preg_replace(
-				array('/'.SQUOTES.'/i'),
-				array(BSLASH.SQUOTES),
-				$ResultString
-			);
-		}
+		$ResultString=preg_replace(
+			array('/'.SQUOTES.'/i'),
+			array(BSLASH.SQUOTES),
+			$ResultString
+		);
+		
 		
 		return $ResultString;
 	}
@@ -1956,18 +2136,18 @@
 	* 確保html裡沒有非法的腳本語法
 	*/
 	function v1_escape_for_xss($strInput) {
-			$ResultString='';
-			$ResultString=preg_replace(
-				array('/<script>/i','/<\\/script>/i'),
-				array('&lt;script&gt;','&lt;/script&gt;'),
-				$strInput
-			);
-			$ResultString=preg_replace(
-				array('/javascript:/i','/vbscript:/i'),
-				array('javascript：','vbscript：'),
-				$ResultString
-			);
-			return $ResultString;
+		$ResultString='';
+		$ResultString=preg_replace(
+			array('/<script>/i','/<\\/script>/i'),
+			array('&lt;script&gt;','&lt;/script&gt;'),
+			$strInput
+		);
+		$ResultString=preg_replace(
+			array('/javascript:/i','/vbscript:/i'),
+			array('javascript：','vbscript：'),
+			$ResultString
+		);
+		return $ResultString;
 	}
 	
 	/**
