@@ -2007,6 +2007,33 @@
 			
 		}
 		
+		 /**
+		 * 
+		 * 檢查日期時間資料格式 本日期時間程式庫的格式稱為datebigint 
+		 * 例：20191208235930 Y(年)m(月)d(日)H(時)i(分)s(秒)   '0'代表空值
+		 * @param string $testword 欲轉換之日期數字格式字串 
+		 * @param string $which_is_empty 哪個字串代表尚為有日期資料
+		 * @return bool
+		 * @throws Exception
+		 */
+		static public function is_check_datebigint($testword) {
+			if(myGlobal::is_solid_string($testword)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $testword error');
+			}
+			
+
+			$returnresult = false;
+			$validate_rule='/(^\\d{4}\\d{2}\\d{2}[0-1][0-9][0-5][0-9][0-5][0-9]$)|(^\\d{4}\\d{2}\\d{2}[2][0-3][0-5][0-9][0-5][0-9]$)/Dsu';
+			$temp_result=preg_match($validate_rule,$testword);
+			if($temp_result===false){
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $validate_rule error');
+			}elseif($temp_result===1){
+				$returnresult=true;
+			}
+
+			return $returnresult;
+		}
 		
 		 /**
 		 * 
@@ -2019,12 +2046,28 @@
 		 * @throws Exception
 		 */
 		static public function datebigint_formattedstring($datebigint, $the_format, $emptystring = '') {
+			if(self::is_check_datebigint($datebigint) || $datebigint==='0' ){
+
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $datebigint error');
+			}
+			
+			if(myGlobal::is_solid_string($the_format)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $the_format error');
+			}
+
+			if(is_string($emptystring)){
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $emptystring error');
+			}
+
 			$returnstring = $emptystring;
-			if (myGlobal::is_non_empty_string($datebigint) && $datebigint !== '0') {
+			if ($datebigint !== '0') {
 				sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
 
 				$returnstring = str_replace(
-						array('Y', 'm', 'd', 'H', 'i', 's'), array($year, $month, $day, $hour, $minute, $second), $the_format
+					array('Y', 'm', 'd', 'H', 'i', 's'), array($year, $month, $day, $hour, $minute, $second), $the_format
 				);
 			}
 			return $returnstring;
@@ -2039,26 +2082,31 @@
 		 * @throws Exception
 		 */
 		static public function datebigint_parse($datebigint) {
-			$return_array=array();
-			if (myGlobal::is_non_empty_string($datebigint)) {
-				sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
-				if($day && $day!='00' ){
-				
-				}else{
-					$day=1;
-				}
-				$the_timestamp=mktime((int)$hour,(int)$minute,(int)$second,(int)$month,(int)$day,(int)$year);
-				$the_same_month_first_day_timestamp=mktime(0,0,0,(int)$month,1,(int)$year);
-				$return_array['Y']=$year;
-				$return_array['m']=$month;
-				$return_array['d']=$day;
-				$return_array['H']=$hour;
-				$return_array['i']=$minute;
-				$return_array['s']=$day;
-				$return_array['M']=date('M',$the_timestamp);
-				$return_array['t']=date('t',$the_timestamp);
-				$return_array['same_month_first_day_w']=date('w',$the_same_month_first_day_timestamp);
+			if(self::is_check_datebigint($datebigint)){
+
+			}else{
+				throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $datebigint error');
 			}
+			$return_array=array();
+			
+			sscanf($datebigint, '%4s%2s%2s%2s%2s%2s', $year, $month, $day, $hour, $minute, $second);
+			if($day && $day!='00' ){
+			
+			}else{
+				$day=1;
+			}
+			$the_timestamp=mktime((int)$hour,(int)$minute,(int)$second,(int)$month,(int)$day,(int)$year);
+			$the_same_month_first_day_timestamp=mktime(0,0,0,(int)$month,1,(int)$year);
+			$return_array['Y']=$year;
+			$return_array['m']=$month;
+			$return_array['d']=$day;
+			$return_array['H']=$hour;
+			$return_array['i']=$minute;
+			$return_array['s']=$day;
+			$return_array['M']=date('M',$the_timestamp);
+			$return_array['t']=date('t',$the_timestamp);
+			$return_array['same_month_first_day_w']=date('w',$the_same_month_first_day_timestamp);
+			
 			 return $return_array;
 		}
 
