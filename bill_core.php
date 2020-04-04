@@ -1,6 +1,7 @@
 <?php
 	/**
 	 * 建置網站常會用到的php函式庫
+	 * (需在PHP7.0以上環境運行)
 	 */
 
 	 
@@ -40,7 +41,7 @@
 		public function __construct() {
 			
 		}
-
+		
 		/**
 		 * 
 		 * 檢查輸入的變數是否為有長度字串 
@@ -49,7 +50,7 @@
 		 * @return bool
 		 * @throws Exception
 		 */
-		static public function is_non_empty_string($checked_var) {
+		static public function is_solid_string($checked_var) {
 			if (gettype($checked_var) !== 'string') {
 				return false;
 			}
@@ -61,25 +62,13 @@
 		
 		/**
 		 * 
-		 * 檢查輸入的變數是否為有長度字串 
-		 *
-		 * @param mixed $checked_var 要檢查的變數
-		 * @return bool
-		 * @throws Exception
-		 */
-		static public function is_solid_string($checked_var) {
-			return self::is_non_empty_string($checked_var);
-		}
-		
-		/**
-		 * 
 		 * 檢查輸入的值是否為有元素陣列 
 		 *
 		 * @param mixed $checked_var 要檢查的變數
 		 * @return bool
 		 * @throws Exception
 		 */
-		static public function is_non_empty_array($checked_var) {
+		static public function is_solid_array($checked_var) {
 			if (gettype($checked_var) !== 'array') {
 				return false;
 			}
@@ -91,33 +80,6 @@
 		
 		/**
 		 * 
-		 * 檢查輸入的值是否為有元素陣列 
-		 *
-		 * @param mixed $checked_var 要檢查的變數
-		 * @return bool
-		 * @throws Exception
-		 */
-		static public function is_solid_array($checked_var) {
-			return self::is_non_empty_array($checked_var);
-		}
-		
-		/**
-		 * 
-		 * 檢查輸入的值是否為數字型態
-		 *
-		 * @param mixed $checked_var 要檢查的變數
-		 * @return bool
-		 * @throws Exception
-		 */
-		static public function is_non_empty_number($checked_var) {
-			if (gettype($checked_var) !== 'double' && gettype($checked_var) !== 'integer') {
-				return false;
-			}
-			return true;//若變數的資料型態是double或integer，則返回true
-		}
-		
-		/**
-		 * 
 		 * 檢查輸入的值是否為數字型態，若為0也會返回true
 		 *
 		 * @param mixed $checked_var 要檢查的變數
@@ -125,7 +87,10 @@
 		 * @throws Exception
 		 */
 		static public function is_solid_number($checked_var) {
-			return self::is_non_empty_number($checked_var);
+			if (gettype($checked_var) !== 'double' && gettype($checked_var) !== 'integer') {
+				return false;
+			}
+			return true;//若變數的資料型態是double或integer，則返回true
 		}
 		
 		/**
@@ -2201,11 +2166,21 @@
 	/**
 	 * 確保client端傳過來得資料，不會干擾網站正常的運行
 	 * 
-	 * 在我的架構裡，是資料存到資料庫前，就會做相關資安的處理。
-	 * 而不是日後，從資料庫抓出資料，要顯示前，在做資安的處理。
+	 * 在bill_core的架構裡，是資料存到資料庫前，就會做相關資安的處理。
+	 * 而不是從資料庫抓出資料時，要顯示前，再做資安的處理。
 	 * 
 	 */
 	function v1_process_external_data($thestring,$ispure=true) {
+		//$the_string
+		//$the_string、$is_escape_for_html
+		//$the_string、$is_escape_for_html、$is_remove_extra_blanks
+		if (gettype($thestring) !== 'string') {
+			throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $thestring error');
+		}
+		if (gettype($ispure) !== 'boolean') {
+			throw new Exception('Call ' . __FUNCTION__ . ' fail.Because $ispure error');
+		}
+		
 		$ResultString=trim($thestring);
 		
 		$ResultString=v1_get_raw_gpc($ResultString);
